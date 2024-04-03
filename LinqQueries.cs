@@ -44,5 +44,17 @@ namespace curso_linq
             // Query expresion
             //return from l in booksCollection where l.PageCount >= 250 && l.Title.Contains("in Action") select l;
         }
+
+        public bool BooksHaveStatus()
+        {
+            // Extension method
+            return booksCollection.All(book => !String.IsNullOrWhiteSpace(book.Status));
+        }
+
+        public bool BooksPublishIn2005()
+        {
+            // Extension method
+            return booksCollection.Any(book => book.PublishedDate.Year == 2005);
+        }
     }
 }
