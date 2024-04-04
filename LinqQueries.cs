@@ -56,5 +56,11 @@ namespace curso_linq
             // Extension method
             return booksCollection.Any(book => book.PublishedDate.Year == 2005);
         }
+
+        public IEnumerable<Book> PythonBooks()
+        {
+            // Extension method
+            return booksCollection.Where(p => p.Categories.Contains("Python"));
+        }
     }
 }
