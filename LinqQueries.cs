@@ -62,5 +62,16 @@ namespace curso_linq
             // Extension method
             return booksCollection.Where(p => p.Categories.Contains("Python"));
         }
+
+        public IEnumerable<Book> JavaBooksOrdered()
+        {
+            // Extension method
+            return booksCollection.Where(p => p.Categories.Contains("Java")).OrderBy(p => p.Title);
+        }
+
+        public IEnumerable<Book> BooksSortedByPagesDescending()
+        {
+            return booksCollection.Where(p => p.PageCount >= 450).OrderByDescending(p => p.PageCount);
+        }
     }
 }
