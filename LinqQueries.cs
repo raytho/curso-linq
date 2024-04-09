@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -85,6 +86,88 @@ namespace curso_linq
             .Where(p => p.PageCount > 400)
             .Take(4)
             .Skip(2);
+        }
+
+        public IEnumerable<Book> ThreeBookOfCollection()
+        {
+            return booksCollection.Take(3)
+            .Select(p => new Book() { Title = p.Title, PageCount = p.PageCount });
+        }
+
+        public int BooksLargerThan200and500Pages()
+        {
+            return booksCollection
+            .Where(p => p.PageCount >= 200 && p.PageCount <= 500)
+            .Count();
+        }
+
+        public DateTime MinimumDateBook() => booksCollection
+            .Min(p => p.PublishedDate);
+
+        public int MaxPagesBook() => booksCollection
+            .Max(p => p.PageCount);
+
+        public Book BookMinPageCount()
+        {
+            return booksCollection
+            .Where(p => p.PageCount > 0)
+            .MinBy(p => p.PageCount);
+        }
+
+        public Book BookMaxDate()
+        {
+            return booksCollection
+            .MaxBy(p => p.PublishedDate);
+        }
+
+        public int SumPages() => booksCollection
+        .Where(p => p.PageCount >= 0 && p.PageCount <= 500)
+        .Sum(p => p.PageCount);
+
+        public string BooksAfter2005()
+        {
+            return booksCollection
+            .Where(p => p.PublishedDate.Year > 2005)
+            .Aggregate("", (BooksTitle, next) =>{
+                if(BooksTitle != string.Empty)
+                {
+                    BooksTitle += " - " + next.Title;
+                }
+                else
+                {
+                    BooksTitle += next.Title;
+                }
+
+                return BooksTitle;
+            });
+        }
+
+        public double AverageCharacterTitle()
+        {
+            return booksCollection.Where(p => p.Title.Length > 0).Average(p => p.Title.Length);
+        }
+
+        public IEnumerable<IGrouping<int, Book>> BooksAfter2000Group()
+        {
+            return booksCollection
+            .Where(p => p.PublishedDate.Year > 2000)
+            .GroupBy(p => p.PublishedDate.Year);
+        }
+
+        public ILookup<char, Book> BooksDictionaryByLetter()
+        {
+            return booksCollection
+            .ToLookup(p => p.Title[0], p => p);
+        }
+
+        public IEnumerable<Book> BooksAfter2005WithMorethat500Pages()
+        {
+            var booksAfter2005 = booksCollection.Where(p => p.PublishedDate.Year >= 2005);
+            var booksPageCountMore500 = booksCollection.Where(p => p.PageCount > 500);
+            return booksAfter2005.Join(booksPageCountMore500, 
+                                    p => p.Title, 
+                                    x => x.Title,
+                                    (p,x) => p);
         }
     }
 }
